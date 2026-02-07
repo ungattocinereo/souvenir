@@ -6,7 +6,7 @@
   <title>souvenir — Конструктор гирлянд</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700;800;900&family=Onest:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -38,7 +38,7 @@
     }
 
     body {
-      font-family: 'Onest', -apple-system, sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.5;
@@ -67,10 +67,10 @@
     }
 
     .logo {
-      font-family: 'Unbounded', sans-serif;
-      font-weight: 700;
-      font-size: 18px;
-      letter-spacing: -0.02em;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: -0.03em;
       color: var(--text);
       text-decoration: none;
     }
@@ -259,7 +259,8 @@
     .banner-container {
       position: relative;
       z-index: 2;
-      width: 92%;
+      width: 88%;
+      max-width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -268,6 +269,7 @@
       --line-scale: 1;
       margin-bottom: auto;
       margin-top: 6%;
+      overflow: hidden;
     }
 
     /* Scale gap between lines based on count */
@@ -306,9 +308,11 @@
     .banner-letters {
       display: flex;
       justify-content: center;
-      gap: 3px;
+      gap: 2px;
       position: relative;
       z-index: 1;
+      max-width: 100%;
+      flex-wrap: nowrap;
     }
 
     .banner-letter {
@@ -337,6 +341,7 @@
       line-height: 1;
       user-select: none;
       transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+      flex-shrink: 1;
     }
 
     .letter-space {
@@ -429,11 +434,11 @@
     }
 
     .config-title {
-      font-family: 'Unbounded', sans-serif;
-      font-weight: 700;
-      font-size: clamp(28px, 4vw, 40px);
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: clamp(28px, 4vw, 38px);
       line-height: 1.15;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
       margin-bottom: 8px;
     }
 
@@ -466,11 +471,11 @@
     }
 
     .step-heading {
-      font-family: 'Unbounded', sans-serif;
-      font-weight: 600;
-      font-size: 18px;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700;
+      font-size: 19px;
       margin-bottom: 16px;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
     }
 
     /* ========== OCCASION PILLS ========== */
@@ -488,7 +493,7 @@
       border: 1.5px solid var(--border);
       border-radius: 100px;
       background: var(--surface);
-      font-family: 'Onest', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 14px;
       font-weight: 500;
       color: var(--text);
@@ -527,7 +532,7 @@
       border: 1.5px solid var(--border);
       border-radius: var(--radius);
       background: var(--surface);
-      font-family: 'Onest', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 16px;
       font-weight: 500;
       color: var(--text);
@@ -593,7 +598,7 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 4px;
-      font-family: 'Onest', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 11px;
       font-weight: 600;
       color: var(--text-2);
@@ -617,7 +622,7 @@
       border-radius: 100px;
       background: var(--surface);
       border: 1px solid var(--border);
-      font-family: 'Onest', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 13px;
       font-weight: 500;
       color: var(--text-2);
@@ -671,8 +676,8 @@
     }
 
     .style-card-preview .mini-letter {
-      font-family: 'Unbounded', sans-serif;
-      font-weight: 700;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
       font-size: 13px;
       display: flex;
       align-items: center;
@@ -747,7 +752,7 @@
       background: var(--surface);
       cursor: pointer;
       transition: all var(--transition);
-      font-family: 'Onest', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 13px;
       font-weight: 500;
       color: var(--text-2);
@@ -855,7 +860,7 @@
       border: 1.5px solid var(--border);
       border-radius: var(--radius-sm);
       background: var(--bg);
-      font-family: 'Onest', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 15px;
       color: var(--text);
       transition: border-color var(--transition), box-shadow var(--transition);
@@ -886,14 +891,14 @@
     }
 
     .order-price {
-      font-family: 'Unbounded', sans-serif;
-      font-size: 24px;
-      font-weight: 700;
+      font-family: 'Manrope', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
       color: var(--text);
     }
 
     .order-price-note {
-      font-family: 'Onest', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 12px;
       color: var(--text-3);
       font-weight: 400;
@@ -911,7 +916,7 @@
       color: #fff;
       border: none;
       border-radius: var(--radius);
-      font-family: 'Onest', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
@@ -948,7 +953,8 @@
       position: fixed;
       top: 80px;
       left: 50%;
-      transform: translateX(-50%) translateY(-120px);
+      transform: translateX(-50%) translateY(-200%);
+      visibility: hidden;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -958,12 +964,16 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0s 0.5s;
       max-width: 420px;
       width: 90%;
     }
 
-    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      visibility: visible;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0s 0s;
+    }
 
     .toast-icon {
       width: 44px;
@@ -978,9 +988,9 @@
     }
 
     .toast-text h4 {
-      font-family: 'Unbounded', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 2px;
     }
 
@@ -1016,7 +1026,7 @@
       color: #fff;
       border: none;
       border-radius: var(--radius-sm);
-      font-family: 'Onest', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 15px;
       font-weight: 600;
       cursor: pointer;
@@ -1422,7 +1432,7 @@
 
     const MAX_LINES = 5;
     const MAX_CHARS = 120;
-    const MAX_CHARS_PER_LINE = 18;
+    const MAX_CHARS_PER_LINE = 16;
 
     // ==========================================
     //  ROOM BACKGROUNDS (Unsplash)
@@ -1432,11 +1442,6 @@
         name: 'Гостиная',
         url: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=900&h=680&fit=crop&crop=center&q=80',
         thumb: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=100&h=76&fit=crop&crop=center&q=60'
-      },
-      {
-        name: 'Минимал',
-        url: 'https://images.unsplash.com/photo-1615807530294-63b6845e03ba?w=900&h=680&fit=crop&crop=center&q=80',
-        thumb: 'https://images.unsplash.com/photo-1615807530294-63b6845e03ba?w=100&h=76&fit=crop&crop=center&q=60'
       },
       {
         name: 'Уютная',
@@ -1558,8 +1563,8 @@
     //  LINE SCALE — shrink letters for more lines
     // ==========================================
     function getLineScale(lineCount) {
-      const scales = { 1: 1, 2: 0.82, 3: 0.66, 4: 0.54, 5: 0.45 };
-      return scales[Math.min(lineCount, 5)] || 1;
+      const scales = { 1: 0.9, 2: 0.72, 3: 0.58, 4: 0.48, 5: 0.40 };
+      return scales[Math.min(lineCount, 5)] || 0.9;
     }
 
     // ==========================================
