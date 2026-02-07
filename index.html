@@ -147,7 +147,10 @@
     .preview-canvas {
       width: 100%;
       aspect-ratio: 4 / 3;
-      background: linear-gradient(180deg, #F0EDE8 0%, #E6E2DB 100%);
+      background-color: #E6E2DB;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       border-radius: 24px;
       overflow: hidden;
       position: relative;
@@ -156,6 +159,7 @@
       align-items: center;
       justify-content: center;
       box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255,255,255,0.6);
+      transition: background-image 0.6s ease;
     }
 
     .preview-canvas::before {
@@ -163,29 +167,93 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.4) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 80%, rgba(0,0,0,0.03) 0%, transparent 50%);
+        linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.08) 100%),
+        radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.15) 0%, transparent 60%);
       pointer-events: none;
       z-index: 1;
+    }
+
+    /* Room selector */
+    .room-selector {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .room-selector-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-3);
+      white-space: nowrap;
+    }
+
+    .room-thumbs {
+      display: flex;
+      gap: 6px;
+    }
+
+    .room-thumb {
+      width: 44px;
+      height: 34px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      flex-shrink: 0;
+    }
+
+    .room-thumb:hover {
+      border-color: var(--border-focus);
+      transform: scale(1.08);
+    }
+
+    .room-thumb.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(255, 103, 35, 0.2);
     }
 
     .preview-empty {
       text-align: center;
       z-index: 2;
       padding: 40px;
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 16px;
     }
 
     .preview-empty-icon {
       font-size: 48px;
       margin-bottom: 16px;
-      opacity: 0.4;
+      opacity: 0.5;
     }
 
     .preview-empty p {
       font-size: 15px;
-      color: var(--text-3);
+      color: var(--text-2);
       max-width: 240px;
       margin: 0 auto;
+      font-weight: 500;
+    }
+
+    /* Letter shadow for depth on room backgrounds */
+    .letter-body {
+      text-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .style-cards .letter-body,
+    .style-chalk .letter-body,
+    .style-contrast .letter-body,
+    .style-cosmos .letter-body {
+      text-shadow: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    .style-minimal .letter-body {
+      text-shadow: 0 2px 8px rgba(0,0,0,0.1), 0 0 2px rgba(0,0,0,0.05);
     }
 
     .banner-container {
@@ -196,8 +264,10 @@
       flex-direction: column;
       align-items: center;
       gap: 6px;
-      padding: 24px 0;
+      padding: 16px 0 0;
       --line-scale: 1;
+      margin-bottom: auto;
+      margin-top: 6%;
     }
 
     /* Scale gap between lines based on count */
@@ -226,10 +296,11 @@
     }
 
     .string-svg path {
-      stroke: #888;
-      stroke-width: 1.2;
+      stroke: #555;
+      stroke-width: 1.5;
       fill: none;
       stroke-linecap: round;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
     }
 
     .banner-letters {
@@ -252,7 +323,7 @@
     .letter-clip {
       width: 3px;
       height: calc(6px * var(--line-scale, 1));
-      background: #888;
+      background: #555;
       border-radius: 1px;
       flex-shrink: 0;
     }
@@ -1044,6 +1115,7 @@
       .style-card-preview .mini-letter { font-size: 11px; }
       .order-card { padding: 20px; }
       .occasion-pill { padding: 9px 14px; font-size: 13px; }
+      .room-thumb { width: 38px; height: 28px; border-radius: 6px; }
     }
 
     /* ========== SCROLL REVEAL ========== */
@@ -1083,6 +1155,10 @@
           <p>Введите текст, и гирлянда появится здесь</p>
         </div>
         <div class="banner-container" id="bannerContainer" style="display:none;"></div>
+      </div>
+      <div class="room-selector">
+        <span class="room-selector-label">Интерьер:</span>
+        <div class="room-thumbs" id="roomThumbs"></div>
       </div>
     </section>
 
@@ -1347,6 +1423,38 @@
     const MAX_LINES = 5;
     const MAX_CHARS = 120;
     const MAX_CHARS_PER_LINE = 18;
+
+    // ==========================================
+    //  ROOM BACKGROUNDS (Unsplash)
+    // ==========================================
+    const ROOMS = [
+      {
+        name: 'Гостиная',
+        url: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=900&h=680&fit=crop&crop=center&q=80',
+        thumb: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=100&h=76&fit=crop&crop=center&q=60'
+      },
+      {
+        name: 'Минимал',
+        url: 'https://images.unsplash.com/photo-1615807530294-63b6845e03ba?w=900&h=680&fit=crop&crop=center&q=80',
+        thumb: 'https://images.unsplash.com/photo-1615807530294-63b6845e03ba?w=100&h=76&fit=crop&crop=center&q=60'
+      },
+      {
+        name: 'Уютная',
+        url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&h=680&fit=crop&crop=center&q=80',
+        thumb: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=100&h=76&fit=crop&crop=center&q=60'
+      },
+      {
+        name: 'Светлая',
+        url: 'https://images.unsplash.com/photo-1560448076-957f79776e95?w=900&h=680&fit=crop&crop=center&q=80',
+        thumb: 'https://images.unsplash.com/photo-1560448076-957f79776e95?w=100&h=76&fit=crop&crop=center&q=60'
+      },
+      {
+        name: 'Модерн',
+        url: 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=900&h=680&fit=crop&crop=center&q=80',
+        thumb: 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=100&h=76&fit=crop&crop=center&q=60'
+      }
+    ];
+    let currentRoom = 0;
 
     // ==========================================
     //  PALETTES
@@ -1684,6 +1792,11 @@
       const mobileCanvas = $('#mobilePreviewCanvas');
       if (!mobileCanvas) return;
       mobileCanvas.innerHTML = '';
+      // Copy the room background
+      const room = ROOMS[currentRoom];
+      mobileCanvas.style.backgroundImage = `url('${room.url}')`;
+      mobileCanvas.style.backgroundSize = 'cover';
+      mobileCanvas.style.backgroundPosition = 'center';
       if (!state.text.trim()) {
         mobileCanvas.innerHTML = '<div class="preview-empty"><div class="preview-empty-icon">🎏</div><p>Введите текст</p></div>';
       } else {
@@ -1896,9 +2009,42 @@
     });
 
     // ==========================================
+    //  ROOM BACKGROUNDS INIT
+    // ==========================================
+    function setRoom(index) {
+      currentRoom = index;
+      const room = ROOMS[index];
+      previewCanvas.style.backgroundImage = `url('${room.url}')`;
+      // Update thumbnails
+      document.querySelectorAll('.room-thumb').forEach((t, i) => {
+        t.classList.toggle('active', i === index);
+      });
+    }
+
+    function initRooms() {
+      const thumbsContainer = document.getElementById('roomThumbs');
+      ROOMS.forEach((room, i) => {
+        const thumb = document.createElement('button');
+        thumb.className = 'room-thumb' + (i === 0 ? ' active' : '');
+        thumb.style.backgroundImage = `url('${room.thumb}')`;
+        thumb.title = room.name;
+        thumb.addEventListener('click', () => setRoom(i));
+        thumbsContainer.appendChild(thumb);
+      });
+      // Preload room images
+      ROOMS.forEach(room => {
+        const img = new Image();
+        img.src = room.url;
+      });
+      // Set initial room
+      setRoom(0);
+    }
+
+    // ==========================================
     //  INIT — demo with 2 lines
     // ==========================================
     (function init() {
+      initRooms();
       const demo = 'ВАША\nГИРЛЯНДА';
       textInput.value = demo;
       state.text = demo;
